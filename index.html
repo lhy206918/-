@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>居家养老管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "Microsoft YaHei", sans-serif;
+        }
+        body {
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        /* 表格布局实现完美对齐 */
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .main-table td, .main-table th {
+            border: 1px solid #ddd;
+            text-align: center;
+            vertical-align: middle;
+        }
+        /* 左侧：基础数据管理 */
+        .left-col {
+            width: 18%;
+            background-color: #f8f4e8;
+        }
+        .col-title {
+            background-color: #d9c8a5;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 18px 0;
+            color: #3a3a2a;
+            border-bottom: 4px solid #c0a86a;
+        }
+        .menu-item {
+            background-color: #fff;
+            font-size: 18px;
+            padding: 14px 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #4a4a3a;
+            border-bottom: 2px solid #eee;
+        }
+        .menu-item:hover {
+            background-color: #e8e0cc;
+            transform: translateX(3px);
+        }
+        /* 右侧主体区域 */
+        .main-title {
+            background-color: #b87c4f;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 18px 0;
+            color: #fff;
+            letter-spacing: 4px;
+        }
+        .module-group {
+            background-color: #e8dccc;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 14px 0;
+            color: #5a3e2a;
+            border-bottom: 2px solid #c0a86a;
+        }
+        .module-item {
+            background-color: #fff;
+            font-size: 14px;
+            padding: 12px 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #3a3a3a;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .module-item:hover {
+            background-color: #f5efe3;
+            transform: scale(1.02);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .menu-item, .module-item {
+                font-size: 12px;
+                padding: 10px 4px;
+            }
+            .col-title, .module-group {
+                font-size: 16px;
+                padding: 12px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table class="main-table" cellspacing="0" cellpadding="0">
+        <!-- 第一行：左侧基础数据管理 + 右侧主标题 -->
+        <tr>
+            <!-- 左侧：基础数据管理（占8行高度） -->
+            <td rowspan="8" class="left-col" style="vertical-align: top;">
+                <div class="col-title">基础数据管理</div>
+                <div class="menu-item" onclick="location.href='elder.html'">老人档案管理</div>
+                <div class="menu-item" onclick="location.href='service.html'">服务商管理</div>
+                <div class="menu-item" onclick="location.href='institution.html'">养老机构管理</div>
+                <div class="menu-item" onclick="location.href='volunteer.html'">志愿者管理</div>
+                <div class="menu-item" onclick="location.href='doctor.html'">医护人员管理</div>
+                <div class="menu-item" onclick="location.href='member.html'">会员卡管理</div>
+            </td>
+            <!-- 右侧主标题：居家养老管理（跨5列） -->
+            <td colspan="5" class="main-title">居家养老管理</td>
+        </tr>
+        
+        <!-- 第二行：五大模块标题行（健康管理、生活服务、安全守护、精神娱乐、日间照料） -->
+        <tr>
+            <td class="module-group">健康管理</td>
+            <td class="module-group">生活服务</td>
+            <td class="module-group">安全守护</td>
+            <td class="module-group">精神娱乐</td>
+            <td class="module-group">日间照料</td>
+        </tr>
+        
+        <!-- 第一组内容行 -->
+        <tr>
+            <td class="module-item" onclick="location.href='health-record.html'">健康档案</td>
+            <td class="module-item" onclick="location.href='call.html'">呼叫中心</td>
+            <td class="module-item" onclick="location.href='call999.html'">紧急呼救</td>
+            <td class="module-item" onclick="location.href='study.html'">学习培训</td>
+            <td class="module-item" onclick="location.href='meet.html'">接待管理</td>
+        </tr>
+        
+        <!-- 第二组内容行 -->
+        <tr>
+            <td class="module-item" onclick="location.href='health-assess.html'">健康评估</td>
+            <td class="module-item" onclick="location.href='order.html'">服务工单</td>
+            <td class="module-item" onclick="location.href='location.html'">即时定位</td>
+            <td class="module-item" onclick="location.href='comfort.html'">精神慰藉</td>
+            <td class="module-item" onclick="location.href='old-man.html'">老人管理</td>
+        </tr>
+        
+        <!-- 第三组内容行 -->
+        <tr>
+            <td class="module-item" onclick="location.href='health-check.html'">健康体检</td>
+            <td class="module-item" onclick="location.href='consult.html'">咨询回复</td>
+            <td class="module-item" onclick="location.href='track.html'">行动轨迹</td>
+            <td class="module-item" onclick="location.href='activity.html'">娱乐活动</td>
+            <td class="module-item" onclick="location.href='ruo.html'">入托管理</td>
+        </tr>
+        
+        <!-- 第四组内容行 -->
+        <tr>
+            <td class="module-item" onclick="location.href='follow.html'">干预随访</td>
+            <td class="module-item" onclick="location.href='care.html'">上门看护</td>
+            <td class="module-item" onclick="location.href='fence.html'">电子围栏</td>
+            <td class="module-item" onclick="location.href='group.html'">兴趣圈子</td>
+            <td class="module-item" onclick="location.href='money.html'">收费管理</td>
+        </tr>
+        
+        <!-- 第五组内容行 -->
+        <tr>
+            <td class="module-item" onclick="location.href='disease.html'">慢病专项管理</td>
+            <td class="module-item" onclick="location.href='care2.html'">主动关怀</td>
+            <td class="module-item" onclick="location.href='alarm.html'">安防告警</td>
+            <td class="module-item" onclick="location.href='university.html'">老年大学</td>
+            <td class="module-item" onclick="location.href='employee.html'">员工管理</td>
+        </tr>
+        
+        <!-- 第六组内容行 -->
+        <tr>
+            <td class="module-item" onclick="location.href='bed.html'">家庭照护床位</td>
+            <td class="module-item" onclick="location.href='shop.html'">商品购买</td>
+            <td class="module-item" onclick="location.href='deal.html'">接警处理</td>
+            <td class="module-item" onclick="location.href='help.html'">帮扶结对</td>
+            <td class="module-item" onclick="location.href='info.html'">资料管理</td>
+        </tr>
+    </table>
+    
+    <script>
+        // 控制台输出提示，确认所有功能保持原样
+        console.log("居家养老管理系统已加载 — 完全保留原有菜单功能，样式优化为分组模式");
+        
+        // 如果某些页面不存在，可以增加友好提示（不改变原有跳转逻辑，仅增强体验）
+        document.querySelectorAll('.menu-item, .module-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // 完全保留原有onclick行为，不做任何拦截，只是增加一个控制台记录便于调试
+                let targetUrl = this.getAttribute('onclick');
+                if(targetUrl && targetUrl.includes("location.href='")) {
+                    console.log("跳转到: " + targetUrl.match(/location\.href='([^']+)'/)[1]);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
