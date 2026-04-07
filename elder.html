@@ -53,6 +53,10 @@
             margin: 0 3px;
             cursor: pointer;
         }
+        .red-row {
+            color: red !important;
+            font-weight: bold !important;
+        }
 
         .modal {
             display: none;
@@ -107,6 +111,11 @@
             background: #ffe4b5;
             border: 1px solid #666;
         }
+        .note-text {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -127,7 +136,7 @@
 
         <table class="table-box" id="elderTable">
             <tr>
-                <th>档案编号</th><th>老人姓名</th><th>性别</th><th>年龄</th><th>家庭住址</th><th>联系电话</th><th>所属社区</th><th>建档时间</th><th>档案状态</th><th>操作</th>
+                <th>档案编号</th><th>老人姓名</th><th>性别</th><th>年龄</th><th>家庭住址</th><th>联系电话</th><th>所属社区</th><th>建档时间</th><th>健康状态</th><th>操作</th>
             </tr>
         </table>
 
@@ -135,6 +144,7 @@
         <a href="index.html" class="back">返回主页面</a>
     </div>
 
+    <!-- 查看弹窗 -->
     <div class="modal" id="viewModal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">×</span>
@@ -143,6 +153,7 @@
         </div>
     </div>
 
+    <!-- 编辑弹窗 -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">×</span>
@@ -155,6 +166,7 @@
         </div>
     </div>
 
+    <!-- 新增弹窗 -->
     <div class="modal" id="addModal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">×</span>
@@ -172,79 +184,85 @@
     </div>
 
 <script>
+// 全部老人数据
 let data = [
-{"id":1,"name":"于随海","sex":"男","age":68,"addr":"1号楼2单元3层","phone":"","community":"东苗社区","date":"2025-01-10","status":"正常"},
-{"id":2,"name":"张成宗","sex":"男","age":82,"addr":"2号楼24号","phone":"18839783253","community":"东苗社区","date":"2025-01-12","status":"正常"},
-{"id":3,"name":"卞红英","sex":"女","age":80,"addr":"2号楼1单元8号","phone":"18930213310","community":"东苗社区","date":"2025-01-15","status":"正常"},
-{"id":4,"name":"王明乾","sex":"男","age":84,"addr":"2号楼24号","phone":"15343462890","community":"东苗社区","date":"2025-01-20","status":"正常"},
-{"id":5,"name":"石瑞成","sex":"男","age":80,"addr":"6号楼1号","phone":"13633817702","community":"东苗社区","date":"2025-01-21","status":"正常"},
-{"id":6,"name":"马荣先","sex":"女","age":84,"addr":"6号楼1单元4号","phone":"13613858546","community":"东苗社区","date":"2025-01-22","status":"正常"},
-{"id":7,"name":"苑淑芬","sex":"女","age":96,"addr":"3号楼5号","phone":"13598418099","community":"东苗社区","date":"2025-01-23","status":"正常"},
-{"id":8,"name":"李天仲","sex":"男","age":86,"addr":"10号楼25号","phone":"13503865832","community":"东苗社区","date":"2025-01-24","status":"正常"},
-{"id":9,"name":"张桂荣","sex":"女","age":84,"addr":"10号楼25号","phone":"13598026775","community":"东苗社区","date":"2025-01-25","status":"正常"},
-{"id":10,"name":"葛同太","sex":"男","age":85,"addr":"12号楼14号","phone":"13838306990","community":"东苗社区","date":"2025-01-26","status":"正常"},
-{"id":11,"name":"赵月娟","sex":"女","age":90,"addr":"12号楼11号","phone":"15517539909","community":"东苗社区","date":"2025-01-27","status":"正常"},
-{"id":12,"name":"鲁秀英","sex":"女","age":83,"addr":"12号楼14号","phone":"15515575516","community":"东苗社区","date":"2025-01-28","status":"正常"},
-{"id":13,"name":"李灵芝","sex":"女","age":83,"addr":"13号楼2单元12号","phone":"13903861109","community":"东苗社区","date":"2025-01-29","status":"正常"},
-{"id":14,"name":"贾水林","sex":"男","age":83,"addr":"13号楼43号","phone":"15303719105","community":"东苗社区","date":"2025-01-30","status":"正常"},
-{"id":15,"name":"郭耀英","sex":"女","age":80,"addr":"37号楼1单元2号","phone":"13838156179","community":"东苗社区","date":"2025-02-01","status":"正常"},
-{"id":16,"name":"徐兰英","sex":"女","age":85,"addr":"16号楼12号","phone":"13223037239","community":"东苗社区","date":"2025-02-02","status":"正常"},
-{"id":17,"name":"刘素云","sex":"女","age":88,"addr":"16号楼11号","phone":"13663002561","community":"东苗社区","date":"2025-02-03","status":"正常"},
-{"id":18,"name":"李振国","sex":"男","age":87,"addr":"18号楼3单元27号","phone":"13937105822","community":"东苗社区","date":"2025-02-04","status":"正常"},
-{"id":19,"name":"赵淑云","sex":"女","age":86,"addr":"44号楼23号","phone":"18530815151","community":"东苗社区","date":"2025-02-05","status":"正常"},
-{"id":20,"name":"杨传喜","sex":"男","age":82,"addr":"14号楼9号","phone":"19939992473","community":"东苗社区","date":"2025-02-06","status":"正常"},
-{"id":21,"name":"谢庆科","sex":"男","age":85,"addr":"15号楼45号","phone":"15515567410","community":"东苗社区","date":"2025-02-07","status":"正常"},
-{"id":22,"name":"张俊敏","sex":"女","age":85,"addr":"15号楼48号","phone":"13303826519","community":"东苗社区","date":"2025-02-08","status":"正常"},
-{"id":23,"name":"周春英","sex":"女","age":84,"addr":"15号楼50号","phone":"13346942264","community":"东苗社区","date":"2025-02-09","status":"正常"},
-{"id":24,"name":"马相枝","sex":"女","age":80,"addr":"17号楼6号","phone":"18530922992","community":"东苗社区","date":"2025-02-10","status":"正常"},
-{"id":25,"name":"牛保证","sex":"男","age":81,"addr":"9号楼57号","phone":"15803816083","community":"东苗社区","date":"2025-02-11","status":"正常"},
-{"id":26,"name":"丁云福","sex":"男","age":83,"addr":"5号楼3号","phone":"15936266909","community":"东苗社区","date":"2025-02-12","status":"正常"},
-{"id":27,"name":"张好兰","sex":"女","age":83,"addr":"5号楼3","phone":"15936266909","community":"东苗社区","date":"2025-02-13","status":"正常"},
-{"id":28,"name":"石忠诚","sex":"男","age":81,"addr":"5号楼6号","phone":"18037505631","community":"东苗社区","date":"2025-02-14","status":"正常"},
-{"id":29,"name":"刘典三","sex":"男","age":80,"addr":"49号楼33号","phone":"15937119368","community":"东苗社区","date":"2025-02-15","status":"正常"},
-{"id":30,"name":"焦秀云","sex":"女","age":80,"addr":"49号楼3单元602西户","phone":"13526622892","community":"东苗社区","date":"2025-02-16","status":"正常"},
-{"id":31,"name":"关秀兰","sex":"女","age":89,"addr":"11号楼28号","phone":"13803831701","community":"东苗社区","date":"2025-02-17","status":"正常"},
-{"id":32,"name":"王清菊","sex":"女","age":83,"addr":"11号楼21号","phone":"13937190679","community":"东苗社区","date":"2025-02-18","status":"正常"},
-{"id":33,"name":"赵保安","sex":"男","age":80,"addr":"45号楼4单元702号","phone":"13522897977","community":"东苗社区","date":"2025-02-19","status":"正常"},
-{"id":34,"name":"周满云","sex":"女","age":84,"addr":"23号楼6单元69号","phone":"15136250669","community":"东苗社区","date":"2025-02-20","status":"正常"},
-{"id":35,"name":"刘子义","sex":"男","age":89,"addr":"23号楼2单元69号","phone":"13703987772","community":"东苗社区","date":"2025-02-21","status":"正常"},
-{"id":36,"name":"马秀珍","sex":"女","age":83,"addr":"23号楼93号","phone":"13598887700","community":"东苗社区","date":"2025-02-22","status":"正常"},
-{"id":37,"name":"卢东正","sex":"男","age":93,"addr":"23号楼95号","phone":"15138685568","community":"东苗社区","date":"2025-02-23","status":"正常"},
-{"id":38,"name":"孟照显","sex":"男","age":83,"addr":"42号楼54号","phone":"15899067855","community":"东苗社区","date":"2025-02-24","status":"正常"},
-{"id":39,"name":"马绍莲","sex":"女","age":86,"addr":"42号楼54号","phone":"13674995898","community":"东苗社区","date":"2025-02-25","status":"正常"},
-{"id":40,"name":"李恒悦","sex":"男","age":74,"addr":"42号楼8单元303","phone":"15672763419","community":"东苗社区","date":"2025-02-26","status":"正常"},
-{"id":41,"name":"陈桂英","sex":"女","age":76,"addr":"42号楼2单元404","phone":"13674911268","community":"东苗社区","date":"2025-02-27","status":"正常"},
-{"id":42,"name":"张新启","sex":"男","age":77,"addr":"42号楼2单元404","phone":"13674911268","community":"东苗社区","date":"2025-02-28","status":"正常"},
-{"id":43,"name":"王守军","sex":"男","age":83,"addr":"亚星社区13号","phone":"13203877227","community":"东苗社区","date":"2025-03-01","status":"正常"},
-{"id":44,"name":"李翠花","sex":"女","age":82,"addr":"亚星社区13号","phone":"13598051028","community":"东苗社区","date":"2025-03-02","status":"正常"},
-{"id":45,"name":"欧阳和","sex":"男","age":81,"addr":"亚星社区1号","phone":"13838116621","community":"东苗社区","date":"2025-03-03","status":"正常"},
-{"id":46,"name":"谢天喜","sex":"男","age":80,"addr":"公寓楼1单元1号","phone":"13501553452","community":"东苗社区","date":"2025-03-04","status":"正常"},
-{"id":47,"name":"贾爱朵","sex":"女","age":81,"addr":"公寓楼1单元1号","phone":"13501553452","community":"东苗社区","date":"2025-03-05","status":"正常"},
-{"id":48,"name":"郑文杏","sex":"女","age":80,"addr":"8号楼3号","phone":"13700860337","community":"东苗社区","date":"2025-03-06","status":"正常"},
-{"id":49,"name":"杨玉桂","sex":"女","age":82,"addr":"16号楼6号","phone":"18037802956","community":"东苗社区","date":"2025-03-07","status":"正常"},
-{"id":50,"name":"钱玉梅","sex":"女","age":80,"addr":"40号楼6单元407","phone":"13663718611","community":"东苗社区","date":"2025-03-08","status":"正常"},
-{"id":51,"name":"张玉花","sex":"女","age":74,"addr":"39号楼2单元301","phone":"13223061686","community":"东苗社区","date":"2025-03-09","status":"正常"},
-{"id":52,"name":"绍子英","sex":"女","age":86,"addr":"39号楼1单元6层西户","phone":"15290837597","community":"东苗社区","date":"2025-03-10","status":"正常"},
-{"id":53,"name":"魏启超","sex":"男","age":81,"addr":"16号楼3单元18号","phone":"17739790106","community":"东苗社区","date":"2025-03-11","status":"正常"},
-{"id":54,"name":"宋鹤斌","sex":"男","age":82,"addr":"20号楼27号","phone":"13937151440","community":"东苗社区","date":"2025-03-12","status":"正常"},
-{"id":55,"name":"董振","sex":"男","age":84,"addr":"128号","phone":"15617672818","community":"东苗社区","date":"2025-03-13","status":"正常"},
-{"id":56,"name":"黄振国","sex":"男","age":83,"addr":"42号楼50号","phone":"17761669092","community":"东苗社区","date":"2025-03-14","status":"正常"},
-{"id":57,"name":"王敬芝","sex":"女","age":85,"addr":"47号楼27号","phone":"13663821082","community":"东苗社区","date":"2025-03-15","status":"正常"},
-{"id":58,"name":"张彩云","sex":"女","age":88,"addr":"32号楼2号","phone":"13643815938","community":"东苗社区","date":"2025-03-16","status":"正常"},
-{"id":59,"name":"陈宝荣","sex":"女","age":85,"addr":"二七区建新街329号楼附27号","phone":"13674952089","community":"东苗社区","date":"2025-03-17","status":"正常"},
-{"id":60,"name":"齐桂兰","sex":"女","age":88,"addr":"3期16号楼3单元一层东户","phone":"","community":"东苗社区","date":"2025-03-18","status":"正常"},
-{"id":61,"name":"心灵","sex":"女","age":0,"addr":"南门口西边6单元13号704","phone":"13837139291","community":"东苗社区","date":"2025-03-19","status":"正常"},
-{"id":62,"name":"刘兰婷","sex":"女","age":84,"addr":"6号楼3单元33号","phone":"15138960558","community":"东苗社区","date":"2025-03-20","status":"正常"},
-{"id":63,"name":"李金叶","sex":"女","age":88,"addr":"19号楼48号","phone":"13838140811","community":"东苗社区","date":"2025-03-21","status":"正常"},
-{"id":64,"name":"韩志轩","sex":"男","age":89,"addr":"47号楼6号","phone":"15838238269","community":"东苗社区","date":"2025-03-22","status":"正常"}
+{"id":1,"name":"赵保安","sex":"男","age":80,"addr":"45号楼4单元702号","phone":"13522897977","community":"东苗社区","date":"2025-01-10","healthStatus":"健康","note":""},
+{"id":2,"name":"卞红英","sex":"女","age":80,"addr":"2号楼1单元8号","phone":"18930213310","community":"东苗社区","date":"2025-01-12","healthStatus":"健康","note":""},
+{"id":3,"name":"石瑞成","sex":"男","age":80,"addr":"6号楼1号","phone":"13633817702","community":"东苗社区","date":"2025-01-15","healthStatus":"健康","note":""},
+{"id":4,"name":"郭耀英","sex":"女","age":80,"addr":"37号楼1单元2号","phone":"13838156179","community":"东苗社区","date":"2025-01-20","healthStatus":"健康","note":""},
+{"id":5,"name":"张好兰","sex":"女","age":83,"addr":"5号楼3","phone":"15936266909","community":"东苗社区","date":"2025-01-21","healthStatus":"健康","note":""},
+{"id":6,"name":"石忠诚","sex":"男","age":81,"addr":"5号楼6号","phone":"18037505631","community":"东苗社区","date":"2025-01-22","healthStatus":"健康","note":""},
+{"id":7,"name":"牛保证","sex":"男","age":81,"addr":"9号楼57号","phone":"15803816083","community":"东苗社区","date":"2025-01-23","healthStatus":"健康","note":""},
+{"id":8,"name":"魏启超","sex":"男","age":81,"addr":"16号楼3单元18号","phone":"17739790106","community":"东苗社区","date":"2025-01-24","healthStatus":"健康","note":""},
+{"id":9,"name":"宋鹤斌","sex":"男","age":82,"addr":"20号楼27号","phone":"13937151440","community":"东苗社区","date":"2025-01-25","healthStatus":"健康","note":""},
+{"id":10,"name":"李翠花","sex":"女","age":82,"addr":"亚星社区13号","phone":"13598051028","community":"东苗社区","date":"2025-01-26","healthStatus":"健康","note":""},
+{"id":11,"name":"杨传喜","sex":"男","age":82,"addr":"14号楼9号","phone":"19939992473","community":"东苗社区","date":"2025-01-27","healthStatus":"健康","note":""},
+{"id":12,"name":"马荣先","sex":"女","age":84,"addr":"6号楼1单元4号","phone":"13613858546","community":"东苗社区","date":"2025-01-28","healthStatus":"健康","note":""},
+{"id":13,"name":"黄振国","sex":"男","age":83,"addr":"42号楼50号","phone":"17761669092","community":"东苗社区","date":"2025-01-29","healthStatus":"健康","note":""},
+{"id":14,"name":"董振","sex":"男","age":84,"addr":"128号","phone":"15617672818","community":"东苗社区","date":"2025-01-30","healthStatus":"健康","note":""},
+{"id":15,"name":"李灵芝","sex":"女","age":83,"addr":"13号楼2单元12号","phone":"13903861109","community":"东苗社区","date":"2025-02-01","healthStatus":"健康","note":""},
+{"id":16,"name":"贾水林","sex":"男","age":83,"addr":"13号楼43号","phone":"15303719105","community":"东苗社区","date":"2025-02-02","healthStatus":"健康","note":""},
+{"id":17,"name":"葛同太","sex":"男","age":85,"addr":"12号楼14号","phone":"13838306990","community":"东苗社区","date":"2025-02-03","healthStatus":"健康","note":""},
+{"id":18,"name":"徐兰英","sex":"女","age":85,"addr":"16号楼12号","phone":"13223037239","community":"东苗社区","date":"2025-02-04","healthStatus":"健康","note":""},
+{"id":19,"name":"卢东正","sex":"男","age":93,"addr":"23号楼95号","phone":"15138685568","community":"东苗社区","date":"2025-02-05","healthStatus":"健康","note":""},
+{"id":20,"name":"李振国","sex":"男","age":87,"addr":"18号楼3单元27号","phone":"13937105822","community":"东苗社区","date":"2025-02-06","healthStatus":"健康","note":""},
+{"id":21,"name":"赵淑云","sex":"女","age":86,"addr":"44号楼23号","phone":"18530815151","community":"东苗社区","date":"2025-02-07","healthStatus":"健康","note":""},
+{"id":22,"name":"赵月娟","sex":"女","age":90,"addr":"12号楼11号","phone":"15517539909","community":"东苗社区","date":"2025-02-08","healthStatus":"健康","note":""},
+{"id":23,"name":"刘子义","sex":"男","age":89,"addr":"23号楼2单元69号","phone":"13703987772","community":"东苗社区","date":"2025-02-09","healthStatus":"健康","note":""},
+{"id":24,"name":"马绍莲","sex":"女","age":86,"addr":"42号楼54号","phone":"13674995898","community":"东苗社区","date":"2025-02-10","healthStatus":"健康","note":""},
+{"id":25,"name":"苑淑芬","sex":"女","age":96,"addr":"3号楼5号","phone":"13598418099","community":"东苗社区","date":"2025-02-11","healthStatus":"健康","note":""},
+{"id":26,"name":"刘兰婷","sex":"女","age":84,"addr":"6号楼3单元33号","phone":"15138960558","community":"东苗社区","date":"2025-02-12","healthStatus":"健康","note":""},
+{"id":27,"name":"李金叶","sex":"女","age":88,"addr":"19号楼48号","phone":"13838140811","community":"东苗社区","date":"2025-02-13","healthStatus":"健康","note":""},
+{"id":28,"name":"马相枝","sex":"女","age":80,"addr":"17号楼6号","phone":"18530922992","community":"东苗社区","date":"2025-02-14","healthStatus":"健康","note":""},
+{"id":29,"name":"刘典三","sex":"男","age":80,"addr":"49号楼33号","phone":"15937119368","community":"东苗社区","date":"2025-02-15","healthStatus":"健康","note":""},
+{"id":30,"name":"谢天喜","sex":"男","age":80,"addr":"公寓楼1单元1号","phone":"13501553452","community":"东苗社区","date":"2025-02-16","healthStatus":"健康","note":""},
+{"id":31,"name":"贾爱朵","sex":"女","age":81,"addr":"公寓楼1单元1号","phone":"13501553452","community":"东苗社区","date":"2025-02-17","healthStatus":"健康","note":""},
+{"id":32,"name":"郑文杏","sex":"女","age":80,"addr":"8号楼3号","phone":"13700860337","community":"东苗社区","date":"2025-02-18","healthStatus":"健康","note":""},
+{"id":33,"name":"欧阳和","sex":"男","age":81,"addr":"亚星社区1号","phone":"13838116621","community":"东苗社区","date":"2025-02-19","healthStatus":"健康","note":""},
+{"id":34,"name":"关秀兰","sex":"女","age":89,"addr":"11号楼28号","phone":"13803831701","community":"东苗社区","date":"2025-02-20","healthStatus":"健康","note":""},
+{"id":35,"name":"王敬芝","sex":"女","age":85,"addr":"47号楼27号","phone":"13663821082","community":"东苗社区","date":"2025-02-21","healthStatus":"健康","note":""},
+{"id":36,"name":"丁云福","sex":"男","age":83,"addr":"5号楼3号","phone":"15936266909","community":"东苗社区","date":"2025-02-22","healthStatus":"健康","note":""},
+{"id":37,"name":"杨玉桂","sex":"女","age":82,"addr":"16号楼6号","phone":"18037802956","community":"东苗社区","date":"2025-02-23","healthStatus":"健康","note":""},
+{"id":38,"name":"鲁秀英","sex":"女","age":83,"addr":"12号楼14号","phone":"15515575516","community":"东苗社区","date":"2025-02-24","healthStatus":"健康","note":""},
+{"id":39,"name":"马秀珍","sex":"女","age":83,"addr":"23号楼93号","phone":"13598887700","community":"东苗社区","date":"2025-02-25","healthStatus":"健康","note":""},
+{"id":40,"name":"孟照显","sex":"男","age":83,"addr":"42号楼54号","phone":"15899067855","community":"东苗社区","date":"2025-02-26","healthStatus":"健康","note":""},
+{"id":41,"name":"王清菊","sex":"女","age":83,"addr":"11号楼21号","phone":"13937190679","community":"东苗社区","date":"2025-02-27","healthStatus":"健康","note":""},
+{"id":42,"name":"王守军","sex":"男","age":83,"addr":"亚星社区13号","phone":"13203877227","community":"东苗社区","date":"2025-02-28","healthStatus":"健康","note":""},
+{"id":43,"name":"张桂荣","sex":"女","age":84,"addr":"10号楼25号","phone":"13598026775","community":"东苗社区","date":"2025-03-01","healthStatus":"健康","note":""},
+{"id":44,"name":"韩志轩","sex":"男","age":89,"addr":"47号楼6号","phone":"15838238269","community":"东苗社区","date":"2025-03-02","healthStatus":"健康","note":""},
+{"id":45,"name":"谢庆科","sex":"男","age":85,"addr":"15号楼45号","phone":"15515567410","community":"东苗社区","date":"2025-03-03","healthStatus":"健康","note":""},
+{"id":46,"name":"周春英","sex":"女","age":84,"addr":"15号楼50号","phone":"13346942264","community":"东苗社区","date":"2025-03-04","healthStatus":"健康","note":""},
+{"id":47,"name":"张俊敏","sex":"女","age":85,"addr":"15号楼48号","phone":"13303826519","community":"东苗社区","date":"2025-03-05","healthStatus":"健康","note":""},
+{"id":48,"name":"张成宗","sex":"男","age":82,"addr":"10号楼48号","phone":"18839783253","community":"东苗社区","date":"2025-03-06","healthStatus":"健康","note":""},
+{"id":49,"name":"王明乾","sex":"男","age":84,"addr":"2号楼24号","phone":"15343462890","community":"东苗社区","date":"2025-03-07","healthStatus":"健康","note":""},
+{"id":50,"name":"张彩云","sex":"女","age":88,"addr":"32号楼2号","phone":"13643815938","community":"东苗社区","date":"2025-03-08","healthStatus":"健康","note":""},
+{"id":51,"name":"陈宝荣","sex":"女","age":85,"addr":"二七区建新街329号楼附27号","phone":"13674952089","community":"东苗社区","date":"2025-03-09","healthStatus":"健康","note":""},
+{"id":52,"name":"李天仲","sex":"男","age":86,"addr":"10号楼25号","phone":"13503865832","community":"东苗社区","date":"2025-03-10","healthStatus":"健康","note":""},
+{"id":53,"name":"刘素云","sex":"女","age":88,"addr":"16号楼11号","phone":"13663002561","community":"东苗社区","date":"2025-03-11","healthStatus":"健康","note":""},
+{"id":54,"name":"周满云","sex":"女","age":84,"addr":"23号楼6单元69号","phone":"15136250669","community":"东苗社区","date":"2025-03-12","healthStatus":"健康","note":""},
+{"id":55,"name":"李恒悦","sex":"男","age":74,"addr":"42号楼8单元303","phone":"15672763419","community":"东苗社区","date":"2025-03-13","healthStatus":"健康","note":""},
+{"id":57,"name":"张新启","sex":"男","age":77,"addr":"42号楼2单元404","phone":"13674911268","community":"东苗社区","date":"2025-03-15","healthStatus":"健康","note":""},
+{"id":56,"name":"陈桂英","sex":"女","age":76,"addr":"42号楼2单元404","phone":"13674911268","community":"东苗社区","date":"2025-03-14","healthStatus":"异常","note":"静脉曲张"},
+{"id":58,"name":"心灵","sex":"女","age":0,"addr":"南门口西边6单元13号704","phone":"13837139291","community":"东苗社区","date":"2025-03-16","healthStatus":"异常","note":"残疾，出车祸，家庭特困户"},
+{"id":59,"name":"钱玉梅","sex":"女","age":80,"addr":"40号楼6单元407","phone":"13663718611","community":"东苗社区","date":"2025-03-17","healthStatus":"异常","note":"独居老人，胆囊摘除，视力下降"},
+{"id":60,"name":"张玉花","sex":"女","age":74,"addr":"39号楼2单元301","phone":"13223061686","community":"东苗社区","date":"2025-03-18","healthStatus":"异常","note":"不能自理，独居老人"},
+{"id":61,"name":"绍子英","sex":"女","age":86,"addr":"39号楼1单元6层西户","phone":"15290837597","community":"东苗社区","date":"2025-03-19","healthStatus":"异常","note":"胃不舒服，调理"},
+{"id":62,"name":"焦秀云","sex":"女","age":80,"addr":"49号楼3单元602西户","phone":"13526622892","community":"东苗社区","date":"2025-03-20","healthStatus":"异常","note":"腰腿疼，不能做饭，耳朵听不见"},
+{"id":63,"name":"齐桂兰","sex":"女","age":88,"addr":"3期16号楼3单元一层东户","phone":"","community":"东苗社区","date":"2025-03-21","healthStatus":"异常","note":"空巢老人，需人照顾，其中一个坐轮椅，半失能"},
+{"id":64,"name":"于随海","sex":"男","age":68,"addr":"1号楼2单元3层","phone":"","community":"东苗社区","date":"2025-03-22","healthStatus":"异常","note":"不能自理，坐轮椅"}
 ];
 
+// 需要标红的老人
+const keyPersons = ["陈桂英","心灵","钱玉梅","张玉花","绍子英","焦秀云","齐桂兰","于随海"];
+
+// 渲染表格
 function renderTable(){
     let table = document.getElementById("elderTable");
-    let html = `<tr><th>档案编号</th><th>老人姓名</th><th>性别</th><th>年龄</th><th>家庭住址</th><th>联系电话</th><th>所属社区</th><th>建档时间</th><th>档案状态</th><th>操作</th></tr>`;
+    let html = `<tr><th>档案编号</th><th>老人姓名</th><th>性别</th><th>年龄</th><th>家庭住址</th><th>联系电话</th><th>所属社区</th><th>建档时间</th><th>健康状态</th><th>操作</th></tr>`;
     data.forEach(item=>{
+        let isRed = keyPersons.includes(item.name) ? "red-row" : "";
         html+=`
-        <tr>
+        <tr class="${isRed}">
             <td>DM-YL-${String(item.id).padStart(3,'0')}</td>
             <td>${item.name}</td>
             <td>${item.sex}</td>
@@ -253,7 +271,7 @@ function renderTable(){
             <td>${item.phone || '-'}</td>
             <td>${item.community}</td>
             <td>${item.date}</td>
-            <td>${item.status}</td>
+            <td>${item.healthStatus}</td>
             <td class="table-op">
                 <a onclick="view(${item.id})">查看</a>|<a onclick="edit(${item.id})">编辑</a>|<a onclick="del(${item.id})">删除</a>
             </td>
@@ -263,6 +281,7 @@ function renderTable(){
 }
 renderTable();
 
+// 搜索
 function searchTable() {
     let input = document.getElementById("searchInput").value.toUpperCase();
     let trs = document.querySelectorAll("#elderTable tr");
@@ -271,8 +290,16 @@ function searchTable() {
     }
 }
 
+// 查看详情
 function view(id){
     let d = data.find(x=>x.id==id);
+    let noteHtml = "";
+    if(d.note && d.note.trim() !== ""){
+        noteHtml = `<div class="item note-text">备注：${d.note}</div>`;
+    } else {
+        noteHtml = `<div class="item note-text">健康状况：无疾病，身体健康</div>`;
+    }
+
     document.getElementById("viewInfo").innerHTML = `
         <div class="item">姓名：${d.name}</div>
         <div class="item">性别：${d.sex}</div>
@@ -281,10 +308,12 @@ function view(id){
         <div class="item">电话：${d.phone || '-'}</div>
         <div class="item">社区：${d.community}</div>
         <div class="item">建档：${d.date}</div>
-        <div class="item">状态：${d.status}</div>`;
+        <div class="item">健康状态：${d.healthStatus}</div>
+        ${noteHtml}`;
     document.getElementById("viewModal").style.display = "flex";
 }
 
+// 编辑
 function edit(id){
     let d = data.find(x=>x.id==id);
     document.getElementById("editInfo").innerHTML = `
@@ -297,10 +326,12 @@ function edit(id){
     document.getElementById("editModal").style.display = "flex";
 }
 
+// 批量编辑提示
 function openBatchEdit(){
     alert("请点击列表中的【编辑】按钮进行修改");
 }
 
+// 保存编辑
 function saveEdit(){
     let id = document.getElementById("editId").value;
     let d = data.find(x=>x.id==id);
@@ -314,6 +345,7 @@ function saveEdit(){
     alert("修改成功！");
 }
 
+// 删除
 function del(id){
     if(!confirm("确定删除该老人档案？")) return;
     data = data.filter(x=>x.id!=id);
@@ -321,10 +353,12 @@ function del(id){
     alert("删除成功！");
 }
 
+// 新增
 function addNew(){
     document.getElementById("addModal").style.display = "flex";
 }
 
+// 保存新增
 function saveAdd(){
     let name = document.getElementById("addName").value.trim();
     if(!name){ alert("请输入姓名！"); return; }
@@ -342,7 +376,8 @@ function saveAdd(){
         phone: document.getElementById("addPhone").value || "",
         community: "东苗社区",
         date: dateStr,
-        status: "正常"
+        healthStatus: "健康",
+        note: ""
     });
     
     closeModal();
@@ -356,10 +391,11 @@ function saveAdd(){
     document.getElementById("addPhone").value = "";
 }
 
+// 导出Excel
 function exportExcel(){
-    let csv = "档案编号,姓名,性别,年龄,家庭住址,联系电话,所属社区,建档时间,档案状态\n";
+    let csv = "档案编号,姓名,性别,年龄,家庭住址,联系电话,所属社区,建档时间,健康状态,备注\n";
     data.forEach(item=>{
-        csv += `DM-YL-${String(item.id).padStart(3,'0')},${item.name},${item.sex},${item.age || ''},${item.addr},${item.phone || ''},${item.community},${item.date},${item.status}\n`;
+        csv += `DM-YL-${String(item.id).padStart(3,'0')},${item.name},${item.sex},${item.age || ''},${item.addr},${item.phone || ''},${item.community},${item.date},${item.healthStatus},${item.note || '无疾病，身体健康'}\n`;
     });
     
     let blob = new Blob([new Uint8Array([0xEF,0xBB,0xBF]), csv], {type: "text/csv;charset=utf-8"});
@@ -371,6 +407,7 @@ function exportExcel(){
     URL.revokeObjectURL(url);
 }
 
+// 关闭弹窗
 function closeModal(){
     document.querySelectorAll(".modal").forEach(m=>m.style.display="none");
 }
