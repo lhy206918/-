@@ -13,7 +13,10 @@
         }
 
         body {
-            background: #fdf5e6;
+            /* 地图做背景 + 虚化遮罩 */
+            background: #fdf5e6 url('community.png') center center / cover no-repeat fixed;
+            background-blend-mode: overlay;
+            background-color: rgba(253, 245, 230, 0.88);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,7 +25,7 @@
 
         .login-container {
             width: 520px;
-            background: #fff;
+            background: rgba(255,255,255,0.95);
             border-radius: 10px;
             box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
             border: 1px solid #e6c8a1;
@@ -104,7 +107,6 @@
             let user = document.getElementById("username").value;
             let pwd = document.getElementById("password").value;
             if (user === "admin" && pwd === "123456") {
-                // 直接跳转，无弹窗
                 window.location.href = "login.html";
             } else {
                 alert("账号或密码错误，请重试！");
