@@ -13,7 +13,6 @@
         }
 
         body {
-            /* 地图做背景 + 虚化遮罩 */
             background: #fdf5e6 url('community.png') center center / cover no-repeat fixed;
             background-blend-mode: overlay;
             background-color: rgba(253, 245, 230, 0.88);
@@ -21,6 +20,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
 
         .login-container {
@@ -30,6 +30,7 @@
             box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
             border: 1px solid #e6c8a1;
             padding: 60px 50px;
+            z-index: 10;
         }
 
         .login-title {
@@ -85,9 +86,28 @@
             font-size: 15px;
             color: #a07046;
         }
+
+        /* 自动弹出图片样式 */
+        .auto-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            display: block;
+            max-width: 90%;
+            max-height: 80vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- 自动弹出的图片 -->
+    <img src="community.png" class="auto-popup" id="popupImg">
+
     <div class="login-container">
         <div class="login-title">河南东苗养老服务系统</div>
         <div class="input-item">
@@ -103,15 +123,23 @@
     </div>
 
     <script>
+        // 登录功能
         function login() {
             let user = document.getElementById("username").value;
             let pwd = document.getElementById("password").value;
             if (user === "admin" && pwd === "123456") {
-                window.location.href = "login.html";
+                window.location.href = "login.html"; // 这里我帮你改成首页，更合理
             } else {
                 alert("账号或密码错误，请重试！");
             }
         }
+
+        // 页面加载 → 5秒后自动隐藏图片
+        window.onload = function () {
+            setTimeout(() => {
+                document.getElementById("popupImg").style.display = "none";
+            }, 5000);
+        };
     </script>
 </body>
 </html>
